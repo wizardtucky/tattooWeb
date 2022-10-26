@@ -1,22 +1,18 @@
 package com.example.tattooweb.user;
 
-import com.example.tattooweb.tattoo.Tattoo;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Builder
+@Data
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class User {
     @Id
@@ -41,6 +37,8 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
     }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

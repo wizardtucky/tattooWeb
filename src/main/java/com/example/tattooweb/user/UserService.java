@@ -12,7 +12,11 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
 
-    public void addNewUser(User user) { userRepository.save(user); }
+    public UserDto addNewUser(UserCreateDto userCreateDto) {
+        User newUser = UserMapper.toUser(userCreateDto);
+        userRepository.save(newUser);
+        return UserMapper.toUserDto(newUser);
+    }
 
     public List<User> getUsers() { return userRepository.findAll(); }
 

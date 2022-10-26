@@ -19,5 +19,12 @@ public class Tattoo {
     private Long id;
     private int length;
     private int width;
+    @Transient
+    private int totalArea;
     private TattooComplexity tattooComplexity;
+
+    public int getTotalArea() {
+        return this.length*this.width;
+    }
+
 }

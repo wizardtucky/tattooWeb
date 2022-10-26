@@ -1,6 +1,5 @@
 package com.example.tattooweb.booking;
 
-import com.example.tattooweb.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

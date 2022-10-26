@@ -3,12 +3,13 @@ package com.example.tattooweb.booking;
 import com.example.tattooweb.tattoo.Tattoo;
 import com.example.tattooweb.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
