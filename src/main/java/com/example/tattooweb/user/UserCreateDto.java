@@ -16,12 +16,8 @@ public class UserCreateDto {
 
     private String name;
     private String email;
-    @Transient
-    private Integer age;
+//    @Transient
+//    private Integer age;
     private LocalDate dateOfBirth;
-
-    public Integer getAge() {
-        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
-    }
 
 }

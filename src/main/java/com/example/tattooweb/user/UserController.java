@@ -21,4 +21,16 @@ public class UserController {
     public UserDto registerNewUser(@RequestBody UserCreateDto userCreateDto){
         return userService.addNewUser(userCreateDto);
     }
+
+    @DeleteMapping(path = "{userId}")
+    public void deleteUser(@PathVariable("userID") Long userId) { userService.deleteUser(userId);}
+
+    @PutMapping(path = "{userId}")
+    public void updateStudent(
+            @PathVariable("userId") Long userId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email) {
+        userService.updateUser(userId, name, email);
+    }
+
 }
