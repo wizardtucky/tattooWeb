@@ -1,10 +1,17 @@
 package com.example.tattooweb.user;
 
+import com.example.tattooweb.tattoo.Tattoo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -14,16 +21,26 @@ import java.util.Objects;
 public class User {
     @Id
     @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
+            name = "user_sequence",
+            sequenceName = "user_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
-    )    private Long id;
-    private String userName;
+            generator = "user_sequence"
+    )
+    private Long id;
+    private String name;
+    private String email;
+    @Transient
+    private Integer age;
+    private LocalDate dateOfBirth;
 
+    public User(String name, String email, LocalDate dateOfBirth) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,9 +48,12 @@ public class User {
         User user = (User) o;
         return id != null && Objects.equals(id, user.id);
     }
-
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public Integer getAge() {
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 }
