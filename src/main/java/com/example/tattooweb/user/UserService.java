@@ -17,8 +17,8 @@ public class UserService {
 
     public UserDto addNewUser(UserCreateDto userCreateDto) {
         User newUser = UserMapper.toUser(userCreateDto);
-        if (userRepository.findUserByUserName(userCreateDto.getEmail()).isPresent()) {
-            throw new IllegalStateException("Email taken");
+        if (userRepository.selectExistisEmail(userCreateDto.getEmail())) {
+            throw new IllegalStateException("Email " + userCreateDto.getEmail() + " taken");
         }
         userRepository.save(newUser);
         return UserMapper.toUserDto(newUser);
