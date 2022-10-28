@@ -1,8 +1,5 @@
 package com.example.tattooweb.user;
 
-import javax.persistence.Transient;
-import java.time.LocalDate;
-
 public class UserMapper {
 
     public static User toUser(UserCreateDto userCreateDto){
