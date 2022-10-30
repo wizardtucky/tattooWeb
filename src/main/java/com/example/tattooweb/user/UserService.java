@@ -25,7 +25,7 @@ public class UserService {
 
     public List<User> getUsers() { return userRepository.findAll(); }
 
-    public void deleteUser(Long userId) {
+    public void deleteUserById(Long userId) {
         if(!userRepository.existsById(userId)) {
             throw new IllegalStateException("User with id " + userId + " doesn't exist");
         }
@@ -41,7 +41,7 @@ public class UserService {
                 name.length() > 0 &&
                 !Objects.equals(user.getName(), name)) {
             user.setName(name);
-        }
+        } else throw new IllegalStateException("has to be different and longer than 0 letter name");
 
         if (email != null &&
                 email.length() > 0 &&
@@ -53,6 +53,5 @@ public class UserService {
             }
             user.setEmail(email);
         }
-
     }
 }

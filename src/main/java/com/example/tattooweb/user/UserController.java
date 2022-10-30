@@ -1,12 +1,13 @@
 package com.example.tattooweb.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/")
+@RequestMapping(path = "/api")
 public class UserController {
     private UserService userService;
     @Autowired
@@ -18,14 +19,15 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDto registerNewUser(@RequestBody UserCreateDto userCreateDto){
         return userService.addNewUser(userCreateDto);
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userID") Long userId) { userService.deleteUser(userId);}
+    public void deleteUser(@PathVariable("userId") Long userId) { userService.deleteUserById(userId);}
 
-    @PutMapping(path = "{userId}")
+    @PutMapping(path = "/{userId}")
     public void updateStudent(
             @PathVariable("userId") Long userId,
             @RequestParam(required = false) String name,
