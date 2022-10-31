@@ -3,6 +3,7 @@ package com.example.tattooweb.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -16,8 +17,8 @@ public class UserService {
 
     public UserDto addNewUser(UserCreateDto userCreateDto) {
         User newUser = UserMapper.toUser(userCreateDto);
-        if (userRepository.selectExistisEmail(userCreateDto.getEmail())) {
-            throw new IllegalStateException("Email " + userCreateDto.getEmail() + " taken");
+        if (Boolean.TRUE.equals(userRepository.selectExistisEmail(userCreateDto.getEmail()))) {
+            throw new EntityExistsException("Email " + userCreateDto.getEmail() + " taken");
         }
         userRepository.save(newUser);
         return UserMapper.toUserDto(newUser);
@@ -25,7 +26,7 @@ public class UserService {
 
     public List<User> getUsers() { return userRepository.findAll(); }
 
-    public void deleteUser(Long userId) {
+    public void deleteUserById(Long userId) {
         if(!userRepository.existsById(userId)) {
             throw new IllegalStateException("User with id " + userId + " doesn't exist");
         }
@@ -41,7 +42,7 @@ public class UserService {
                 name.length() > 0 &&
                 !Objects.equals(user.getName(), name)) {
             user.setName(name);
-        }
+        } else throw new IllegalStateException("has to be different and longer than 0 letter name");
 
         if (email != null &&
                 email.length() > 0 &&
@@ -52,7 +53,6 @@ public class UserService {
                 throw new IllegalStateException("email taken");
             }
             user.setEmail(email);
-        }
-
+        } else throw new IllegalStateException("email is incorrect");
     }
 }

@@ -1,53 +1,55 @@
 package com.example.tattooweb.user;
 
 import org.junit.Ignore;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class UserServiceTest {
+
     @Autowired
     private UserService userService;
 
     @Mock
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
     private UserService underTest;
+
+    @InjectMocks
+    private UserService service;
 
     @BeforeEach
     void setUp() {
-
         underTest = new UserService(userRepository);
     }
 
-//    User USER_1 = new User(1L, "Alex", "alex.jamal@gmail.com", 10, LocalDate.of(2012, Month.APRIL, 13));
-//    User USER_2 = new User(2L, "Alex2", "alex2.jamal@gmail.com", 11, LocalDate.of(2011, Month.APRIL, 13));
-
     @Test
-    void CanAddNewUser() {
+    void userShoulsBeAdded() {
         // given
         UserCreateDto userCreateDto = new UserCreateDto(
-                "Alex",
-                "alex.jamal@gmail.com",
+                "Jhoshshhshsh",
+                "Jhoshshhshsh.jamal@gmail.com",
                 LocalDate.of(2012, Month.APRIL, 13)
         );
         // when
@@ -71,142 +73,128 @@ class UserServiceTest {
                 .hasFieldOrPropertyWithValue("dateOfBirth", expectedUser.getDateOfBirth());
     }
 
-    /**
-     * Method under test: {@link UserService#getUsers()}
-     */
     @Test
-    void testGetUsers() {
-        assertEquals(2, userService.getUsers().size());
-    }
-
-    /**
-     * Method under test: {@link UserService#deleteUser(Long)}
-     */
-    @Test
-    void testDeleteUser() {
-        assertThrows(IllegalStateException.class, () -> userService.deleteUser(123L));
-
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser() {
-        assertThrows(IllegalStateException.class, () -> userService.updateUser(123L, "Name", "jane.doe@example.org"));
-        assertThrows(IllegalStateException.class, () -> userService.updateUser(3L, "Name", "jane.doe@example.org"));
-        assertThrows(IllegalStateException.class, () -> userService.updateUser(2L, "Name", "jane.doe@example.org"));
-        //assertThrows(IllegalStateException.class, () -> userService.updateUser(1L, "Name", ":UU "));
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser2() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, "Name", "jane.doe@example.org");
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testUpdateUser3() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   org.springframework.dao.InvalidDataAccessApiUsageException: The given id must not be null!; nested exception is java.lang.IllegalArgumentException: The given id must not be null!
-        //       at jdk.proxy5.$Proxy146.findById(null)
-        //       at com.example.tattooweb.user.UserService.updateUser(UserService.java:37)
-        //       at com.example.tattooweb.user.UserService$$FastClassBySpringCGLIB$$cdafc45f.invoke(<generated>)
-        //   java.lang.IllegalArgumentException: The given id must not be null!
-        //       at jdk.proxy5.$Proxy146.findById(null)
-        //       at com.example.tattooweb.user.UserService.updateUser(UserService.java:37)
-        //       at com.example.tattooweb.user.UserService$$FastClassBySpringCGLIB$$cdafc45f.invoke(<generated>)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        userService.updateUser(null, "Name", "jane.doe@example.org");
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser4() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, "l.UlUlUlUlUl.U", "jane.doe@example.org");
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser5() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, null, "jane.doe@example.org");
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser6() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, "", "jane.doe@example.org");
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser7() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, "Name", null);
-    }
-
-    /**
-     * Method under test: {@link UserService#updateUser(Long, String, String)}
-     */
-    @Test
-    void testUpdateUser8() {
-        // TODO: Complete this test.
-        //   Diffblue AI was unable to find a test
-
-        userService.updateUser(1L, "Name", "");
-    }
-
-
-    @Test
-    void willThrowWhenEmailIsTaken() {
-        // given
+    void userCreateShouldThrowWhenUserEmailAlreadyExists() {
         UserCreateDto userCreateDto = new UserCreateDto(
-                "Alex",
-                "alex.jamal@gmail.com",
+                "Jhoshshhshsh",
+                "Jhoshshhshsh.jamal@gmail.com",
                 LocalDate.of(2012, Month.APRIL, 13)
         );
+        userService.addNewUser(userCreateDto);
+        assertThrows(EntityExistsException.class, () -> userService.addNewUser(userCreateDto));
+    }
+    @Test
+    void should_delete_one_user() {
+        userService.addNewUser(new UserCreateDto("Alexx",
+                "alexxx.jamal@gmail.com",
+                LocalDate.of(2012, Month.APRIL, 13)));
+        long lastUserId = (long) userService.getUsers().size();
+        userService.deleteUserById(lastUserId);
+        long newLastUserId = (long) userService.getUsers().size();
+        assertNotEquals(newLastUserId, lastUserId);
+    }
 
-        given(userRepository.selectExistisEmail(userCreateDto.getEmail()))
-                .willReturn(true);
+    @Test
+    void userDeleteShouldThrowWhenUserIdIsNoneExistent() {
+        Long userId = new Random().longs(1, 10).findFirst().getAsLong();
         // when
         // then
-        assertThatThrownBy(() -> underTest.addNewUser(userCreateDto))
+        assertThatThrownBy(() -> underTest.deleteUserById(userId))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Email " + userCreateDto.getEmail() + " taken");
-        verify(userRepository, never()).save(any());
+                .hasMessageContaining("User with id " + userId + " doesn't exist");
+
     }
+
+    @Test
+    public void user_exists_in_db_success() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("email@gmail.com");
+        user.setName("Nora");
+        user.setDateOfBirth(LocalDate.of(2012, Month.APRIL, 13));
+        user.setAge(10);
+
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+
+        // providing knowledge
+        when(userRepository.findAll()).thenReturn(userList);
+
+        List<User> fetchedUsers = userRepository.findAll();
+        assertThat(fetchedUsers.size()).isPositive();
+    }
+
+    @Test
+    void userUpdateShouldThrowWhenEmailIsIncorrect() {
+        userService.addNewUser(new UserCreateDto("Alexxxx",
+                "takenemail.jamal@gmail.com",
+                LocalDate.of(2012, Month.APRIL, 13)));
+        long lastUserId = (long) userService.getUsers().size();
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "AlexxP2", null))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("email is incorrect");
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "AlexxP3", ""))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("email is incorrect");
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "AlexxP4", "takenemail.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("email is incorrect");
+    }
+    @Test
+    void userUpdateShouldThrowWhenEmailAlreadyExists() {
+        userService.addNewUser(new UserCreateDto("Alexx",
+                "testJosh.jamal@gmail.com",
+                LocalDate.of(2012, Month.APRIL, 13)));
+        userService.addNewUser(new UserCreateDto("testJosh2",
+                "testJosh2.jamal@gmail.com",
+                LocalDate.of(2012, Month.APRIL, 13)));
+        long lastUserId = (long) userService.getUsers().size();
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "testJosh22", "testJosh.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("email taken");
+    }
+    @Test
+    void updateUserShouldThrowIfUserIdDoesntExist() {
+        long lastUserId = (long) userService.getUsers().size() + 1L;
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "Alexx", "alexx.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("user with id " + lastUserId + " doesn't exist");
+    }
+
+    @Test
+    void updateUserShouldThrowIfUserNameIsIncorrect() {
+        userService.addNewUser(new UserCreateDto("Alexx",
+                "alexx.jamal@gmail.com",
+                LocalDate.of(2012, Month.APRIL, 13)));
+        long lastUserId = (long) userService.getUsers().size();
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "", "alexx.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("has to be different and longer than 0 letter name");
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, null, "alexx.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("has to be different and longer than 0 letter name");
+        assertThatThrownBy(() -> userService.updateUser(lastUserId, "Alexx", "alexx.jamal@gmail.com"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("has to be different and longer than 0 letter name");
+    }
+
+//    @Test
+//    void creatingUserWillThrowWhenEmailIsTaken() {
+//        // given
+//        UserCreateDto userCreateDto = new UserCreateDto(
+//                "emailistaken",
+//                "emailistaken.jamal@gmail.com",
+//                LocalDate.of(2012, Month.APRIL, 13)
+//        );
+//        given(userRepository.selectExistisEmail(userCreateDto.getEmail()))
+//                .willReturn(true);
+//        // when
+//        // then
+//        assertThatThrownBy(() -> userService.addNewUser(userCreateDto))
+//                .isInstanceOf(EntityExistsException.class)
+//                .hasMessageContaining("Email " +userCreateDto.getEmail()+ " taken");
+////        verify(userRepository, never()).deleteById(any());
+//    }
 
     @Test
     void canGetAllUsers() {
@@ -214,69 +202,6 @@ class UserServiceTest {
         underTest.getUsers();
         // then
         verify(userRepository).findAll();
-    }
-
-    @Test
-    @Ignore// Noncompliant
-    @Disabled
-    void willThrowWhenUserIdDoesntExist() {
-        // given
-        User user = new User(
-                1L,
-                "Alex",
-                "alex.jamal@gmail.com",
-                10,
-                LocalDate.of(2012, Month.APRIL, 13)
-        );
-
-
-        // when
-//        underTest.deleteUser(user.getId());
-//        // then
-//        assertThatThrownBy(() -> underTest.deleteUser(user.getId()))
-//                .isInstanceOf(IllegalStateException.class)
-//                .hasMessageContaining("User with id " + user.getId() + " doesn't exist");
-//        verify(userRepository).deleteById(user.getId());
-
-    }
-
-    @Test
-    void deletedUserSuccess() throws Exception {
-        // given
-        Long userId = 1L;
-        User user = new User(
-                1L,
-                "Alex",
-                "alex.jamal@gmail.com",
-                10,
-                LocalDate.of(2012, Month.APRIL, 13)
-        );
-
-//        underTest.addNewUser(userCreateDto);
-//        System.out.println(underTest.getUsers());
-//        underTest.deleteUser(userId);
-//        verify(underTest, times(1)).deleteUser(userId);
-//        willDoNothing().given(underTest).deleteUser(userId);
-
-        // when
-//        ResultActions response = mockMvc.perform(delete("/api/{userId}", userId));
-
-        // git check
-//        // when
-//        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-//        underTest.deleteUser(user.getId());
-//        // then
-//
-//        ArgumentCaptor<User> userArgumentCaptor =
-//                ArgumentCaptor.forClass(User.class);
-//        verify(userRepository)
-//                .deleteById(userArgumentCaptor.capture().getId());
-//        verify(userRepository).deleteById(user.getId());
-//
-//        User capturedUser = userArgumentCaptor.getValue();
-////        assertThat(capturedUser).isEqualTo(expectedUser); // ask? not same object?
-//        assertThat(capturedUser);
-//        when(userRepository.findUserById())
     }
 
     @Test
