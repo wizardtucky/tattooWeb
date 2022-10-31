@@ -1,5 +1,5 @@
-package com.example.tattooweb.tattoo;
-
-public class TattooDTO {
-
-}
+//package com.example.tattooweb.tattoo;
+//
+//public class TattooDTO {
+//
+//}
